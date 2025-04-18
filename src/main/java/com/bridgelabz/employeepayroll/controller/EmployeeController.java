@@ -23,7 +23,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     // Create Employees
-    @PostMapping("/create")
+     @PostMapping("/create")
     public ResponseEntity<ResponseDTO> createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
         log.info("Creating Employee with name : {}", employeeDTO.getName());
         Employee employee = employeeService.createEmployee(employeeDTO);
