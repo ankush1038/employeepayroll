@@ -7,13 +7,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-
-public class ResponseDTO {
+@AllArgsConstructor
+public class ResponseDTO<S, S1> {
 
     private String message;
     private Object data;
+
 
 }
 

@@ -4,8 +4,8 @@ import com.bridgelabz.employeepayroll.dto.EmployeeDTO;
 import com.bridgelabz.employeepayroll.dto.ResponseDTO;
 import com.bridgelabz.employeepayroll.model.Employee;
 import com.bridgelabz.employeepayroll.service.EmployeeService;
+import com.bridgelabz.employeepayroll.service.IEmployeeService;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,16 +20,15 @@ import java.util.List;
 public class EmployeeController {
 
     @Autowired
-    private EmployeeService employeeService;
+    private IEmployeeService employeeService;
 
-    // Create Employees
-     @PostMapping("/create")
+    @PostMapping("/create")
     public ResponseEntity<ResponseDTO> createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
         log.info("Creating Employee with name : {}", employeeDTO.getName());
         Employee employee = employeeService.createEmployee(employeeDTO);
         ResponseDTO responseDTO = new ResponseDTO("Employee created successfully", employee);
         log.info("Employee Created Successfully with ID: {}", employee.getEmployeeId());
-        return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
     // Get all Employees
