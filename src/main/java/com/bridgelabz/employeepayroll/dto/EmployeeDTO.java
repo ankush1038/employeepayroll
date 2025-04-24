@@ -14,7 +14,7 @@ import java.util.List;
 public @ToString class EmployeeDTO {
 
     @NotBlank(message = "Name must not be empty")
-    @Pattern(regexp = "^[A-Z][a-zA-Z\\s]{2,}$", message = "Name must start with capital letter and be at least 3 characters")
+    @Pattern(regexp = "^[A-Z][a-zA-Z]{2,}(\\\\s[A-Z][a-zA-Z]{2,})*$", message = "Name must start with capital letter and be at least 3 characters")
     private String name;
 
     @Min(value = 1000, message = "Salary should be more than 1000")

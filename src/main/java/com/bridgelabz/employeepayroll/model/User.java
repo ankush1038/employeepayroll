@@ -33,6 +33,10 @@ public class User implements UserDetails{
 
     private String token;
 
+    private String otp;
+
+    private String resetToken;
+
 
 
     @Override

@@ -1,9 +1,7 @@
 package com.bridgelabz.employeepayroll.service;
 
 
-import com.bridgelabz.employeepayroll.dto.LoginDTO;
-import com.bridgelabz.employeepayroll.dto.RegisterDTO;
-import com.bridgelabz.employeepayroll.dto.ResponseDTO;
+import com.bridgelabz.employeepayroll.dto.*;
 import com.bridgelabz.employeepayroll.model.User;
 import com.bridgelabz.employeepayroll.repository.UserRepository;
 import com.bridgelabz.employeepayroll.Utility.JwtUtility;
@@ -11,11 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Random;
 
 /**
  * Service class for managing user operations like registration and login.
@@ -143,5 +141,52 @@ public class UserService implements  UserInterface{
             return userRepository.findByEmail(email);
         }
 
+        @Override
+        public ResponseDTO<String, String> forgotPassword(ForgotPasswordDTO forgotPasswordDTO){
+            User user = userRepository.findByEmail(forgotPasswordDTO.getEmail()).orElse(null);
+            if (user == null){
+                return new ResponseDTO("error", "User not found");
+            }
+
+            String otp = generateOTP();
+
+            user.setOtp(otp);
+            userRepository.save(user);
+
+            String subject = "Your OTP for Password Reset";
+            String body = "Your OTP is : " + otp + ". Please use this to reset your password.";
+            emailService.sendEmail(user.getEmail(), subject, body);
+
+            return new ResponseDTO("success", "OTP sent to mail.");
+        }
+
+        private  String generateOTP(){
+            Random random = new Random();
+            int otp = 100000 + random.nextInt(900000);
+            return String.valueOf(otp);
+        }
+
+    @Override
+    public ResponseDTO<String, String> resetPassword(ResetPasswordDTO resetPasswordDTO) {
+        Optional<User> optionalUser = userRepository.findByEmail(resetPasswordDTO.getEmail());
+
+        if (optionalUser.isEmpty()) {
+            return new ResponseDTO<>("error", "User not found");
+        }
+
+        User user = optionalUser.get();
+
+        if (!user.getOtp().equals(resetPasswordDTO.getOtp())) {
+            return new ResponseDTO<>("error", "Invalid OTP");
+        }
+
+        user.setPassword(passwordEncoder.encode(resetPasswordDTO.getNewPassword()));
+        user.setOtp(null); // Clear OTP after reset
+        userRepository.save(user);
+
+        return new ResponseDTO<>("message", "Password reset successful");
     }
+
+
+}
 

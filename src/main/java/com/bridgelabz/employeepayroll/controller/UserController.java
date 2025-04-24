@@ -1,8 +1,6 @@
 package com.bridgelabz.employeepayroll.controller;
 
-import com.bridgelabz.employeepayroll.dto.LoginDTO;
-import com.bridgelabz.employeepayroll.dto.RegisterDTO;
-import com.bridgelabz.employeepayroll.dto.ResponseDTO;
+import com.bridgelabz.employeepayroll.dto.*;
 import com.bridgelabz.employeepayroll.service.UserService;
 import com.bridgelabz.employeepayroll.service.UserService;
 import jakarta.validation.Valid;
@@ -45,5 +43,19 @@ public class UserController {
         ResponseDTO responseDTO = userService.loginUser(loginDTO);
         return new ResponseEntity<>(responseDTO,
                 responseDTO.getMessage().equals("error") ? HttpStatus.UNAUTHORIZED : HttpStatus.OK);
+    }
+
+    @PostMapping("/forgot")
+    public  ResponseEntity<ResponseDTO> forgotPassword(@Valid @RequestBody ForgotPasswordDTO forgotPasswordDTO){
+        ResponseDTO responseDTO = userService.forgotPassword(forgotPasswordDTO);
+        return new ResponseEntity(responseDTO,
+                responseDTO.getMessage().equals("error") ? HttpStatus.UNAUTHORIZED : HttpStatus.OK);
+    }
+
+    @PostMapping("/reset")
+    public ResponseEntity<ResponseDTO> resetPassword(@Valid @RequestBody ResetPasswordDTO resetPasswordDTO) {
+        ResponseDTO responseDTO = userService.resetPassword(resetPasswordDTO);
+        return new ResponseEntity<>(responseDTO,
+                responseDTO.getMessage().equals("error") ? HttpStatus.BAD_REQUEST : HttpStatus.OK);
     }
 }

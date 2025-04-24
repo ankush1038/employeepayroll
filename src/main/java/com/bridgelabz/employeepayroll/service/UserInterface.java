@@ -1,8 +1,6 @@
 package com.bridgelabz.employeepayroll.service;
 
-import com.bridgelabz.employeepayroll.dto.LoginDTO;
-import com.bridgelabz.employeepayroll.dto.RegisterDTO;
-import com.bridgelabz.employeepayroll.dto.ResponseDTO;
+import com.bridgelabz.employeepayroll.dto.*;
 import com.bridgelabz.employeepayroll.model.User;
 
 import java.util.Optional;
@@ -13,4 +11,7 @@ public interface UserInterface {
     boolean matchPassword(String rawPassword, String encodedPassword);
     boolean existsByEmail(String email);
     Optional<User> getUserByEmail(String email);
+    ResponseDTO forgotPassword(ForgotPasswordDTO forgotPasswordDTO);
+
+    ResponseDTO<String, String> resetPassword(ResetPasswordDTO resetPasswordDTO);
 }
