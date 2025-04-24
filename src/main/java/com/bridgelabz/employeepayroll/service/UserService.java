@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * Service class for managing user operations like registration and login.
+ */
 @Slf4j
 @Service
 public class UserService implements  UserInterface{
@@ -28,11 +31,15 @@ public class UserService implements  UserInterface{
     EmailService emailService;
     @Autowired
     JwtUtility jwtUtility;
-    /* @Autowired
-    RabbitMQProducer rabbitMQProducer;
-     */
+
 
     private static final Logger log= LoggerFactory.getLogger(UserService.class);
+    /**
+     * Registers a new user in the Employee Payroll system.
+     *
+     * @param registerDTO the user registration details
+     * @return a response object containing a message and registration status
+     */
     @Override
     public ResponseDTO<String, String>registerUser(RegisterDTO registerDTO){
         log.info("Registering user: {}", registerDTO.getEmail());
@@ -56,8 +63,13 @@ public class UserService implements  UserInterface{
         res.setData("User Registed Successfully");
         return res;
     }
-    //public class UserServices implements UserInterface{
 
+    /**
+     * Authenticates a user with provided login credentials and returns a JWT token if successful.
+     *
+     * @param loginDTO the login credentials of the user
+     * @return a response object containing a message and either a token or an error
+     */
         @Override
         public  ResponseDTO<String, String> loginUser(LoginDTO loginDTO){
             log.info("Login attempt for user: {}", loginDTO.getEmail());
@@ -93,17 +105,38 @@ public class UserService implements  UserInterface{
                 return res;
             }
         }
+
+    /**
+     * Compares raw and encoded password to verify login credentials.
+     *
+     * @param rawPassword the plain-text password provided during login
+     * @param encodedPassword the encrypted password stored in the database
+     * @return true if the passwords match, false otherwise
+     */
         @Override
         public boolean matchPassword(String rawPassword, String encodedPassword){
             log.debug("Matching password for login Attempt");
             return passwordEncoder.matches(rawPassword, encodedPassword);
         }
 
+    /**
+     * Checks if a user exists with the given email.
+     *
+     * @param email the email to check
+     * @return true if the user exists, false otherwise
+     */
         @Override
         public boolean existsByEmail(String email){
             log.debug("Checking if user exists by email: {}", email);
             return userRepository.findByEmail(email).isPresent();
         }
+
+    /**
+     * Retrieves a user by their email.
+     *
+     * @param email the email of the user to retrieve
+     * @return an Optional containing the User object if found, or empty otherwise
+     */
         @Override
         public Optional<User> getUserByEmail(String email){
             log.debug("Fetching user by email: {}", email);

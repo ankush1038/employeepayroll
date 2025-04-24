@@ -22,6 +22,12 @@ public class EmployeeController {
     @Autowired
     private IEmployeeService employeeService;
 
+    /**
+     * Create a new employee.
+     *
+     * @param employeeDTO The employee data from the client.
+     * @return ResponseEntity with success message and created employee data.
+     */
     @PostMapping("/create")
     public ResponseEntity<ResponseDTO> createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
         log.info("Creating Employee with name : {}", employeeDTO.getName());
@@ -31,7 +37,11 @@ public class EmployeeController {
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
-    // Get all Employees
+    /**
+     * Fetch all employees.
+     *
+     * @return ResponseEntity with list of all employees.
+     */
     @GetMapping("/all")
     public ResponseEntity<ResponseDTO> getAllEmployees() {
         log.info("Fetching all Employees...");
@@ -41,7 +51,12 @@ public class EmployeeController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    // Get Employee By ID
+    /**
+     * Fetch a specific employee by ID.
+     *
+     * @param id Employee ID.
+     * @return ResponseEntity with the employee data.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDTO> getEmployee(@PathVariable Long id) {
         log.info("Fetching Employee with ID: {}", id);
@@ -51,7 +66,13 @@ public class EmployeeController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    // update employee
+    /**
+     * Update employee details by ID.
+     *
+     * @param id Employee ID to update.
+     * @param employeeDTO Updated employee data.
+     * @return ResponseEntity with updated employee information.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDTO> updateEmployee(@PathVariable Long id, @Valid @RequestBody EmployeeDTO employeeDTO) {
         log.info("Updating Employee with ID: {}", id);
@@ -61,7 +82,12 @@ public class EmployeeController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    // delete employee
+    /**
+     * Delete an employee by ID.
+     *
+     * @param id ID of the employee to be deleted.
+     * @return ResponseEntity with deletion confirmation.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDTO> deleteEmployee(@PathVariable Long id) {
         log.info("Deleting Employee with ID: {}", id);
@@ -71,7 +97,12 @@ public class EmployeeController {
         return new ResponseEntity<>(responseDTO, HttpStatus.NO_CONTENT);
     }
 
-    // get employee by department
+    /**
+     * Get list of employees by department name.
+     *
+     * @param dept Department name.
+     * @return ResponseEntity with list of employees in the specified department.
+     */
     @GetMapping("/department/{dept}")
     public ResponseEntity<ResponseDTO> getEmployeesByDepartment(@PathVariable String dept) {
         log.info("Fetching Employees by Department: {}", dept);

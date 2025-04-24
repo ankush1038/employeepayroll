@@ -26,6 +26,13 @@ public class SecurityConfig {
     @Autowired
     UserDetailsService userDetailsService;
 
+    /**
+     * Configures the security filter chain for HTTP requests.
+     *
+     * @param http The HttpSecurity object to configure the HTTP security.
+     * @return The SecurityFilterChain object with configured settings.
+     * @throws Exception If any configuration fails.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.csrf(csrf -> csrf.disable())
@@ -40,6 +47,11 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Bean to encode passwords using BCrypt algorithm.
+     *
+     * @return A PasswordEncoder instance for encoding passwords.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

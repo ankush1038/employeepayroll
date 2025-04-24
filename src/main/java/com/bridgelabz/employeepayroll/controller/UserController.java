@@ -21,7 +21,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // Register Endpoint
+    /**
+     * Endpoint for registering a new user.
+     *
+     * @param registerDTO The registration details provided by the user.
+     * @return ResponseEntity with success or error message.
+     */
     @PostMapping("/register")
     public ResponseEntity<ResponseDTO> registerUser(@Valid @RequestBody RegisterDTO registerDTO) {
         ResponseDTO responseDTO = userService.registerUser(registerDTO);
@@ -29,7 +34,12 @@ public class UserController {
                 responseDTO.getMessage().equals("error") ? HttpStatus.CONFLICT : HttpStatus.CREATED);
     }
 
-    // Login Endpoint
+    /**
+     * Endpoint for logging in an existing user.
+     *
+     * @param loginDTO The login credentials provided by the user.
+     * @return ResponseEntity with authentication token or error message.
+     */
     @PostMapping("/login")
     public ResponseEntity<ResponseDTO> loginUser(@Valid @RequestBody LoginDTO loginDTO) {
         ResponseDTO responseDTO = userService.loginUser(loginDTO);

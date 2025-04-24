@@ -33,6 +33,11 @@ public @Data class Employee {
         this.updateEmployee(employeeDTO);
     }
 
+    /**
+     * Updates the current employee object with values from the provided DTO.
+     *
+     * @param employeeDTO DTO with new employee data.
+     */
     public void updateEmployee(EmployeeDTO employeeDTO){
         this.name = employeeDTO.getName();
         this.salary = employeeDTO.getSalary();
